@@ -200,6 +200,7 @@ extern void coreTakePhoto(const char* outputImgPath, Vec4 cameraPosition, Vec4 c
 	cameraSetView(&camera, cameraView);
 	graphicsEntitySetRotation(&e, meshRotation);
 
+	glEnable(GL_CULL_FACE);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
