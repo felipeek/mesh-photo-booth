@@ -22,7 +22,7 @@ extern GLFWwindow* mainWindow;
 static PerspectiveCamera createCamera()
 {
 	PerspectiveCamera camera;
-	Vec4 cameraPosition = (Vec4) {0.0f, 0.0f, 1.0f, 1.0f};
+	Vec4 cameraPosition = (Vec4) {0.0f, 0.0f, 200.0f, 1.0f};
 	Vec4 cameraUp = (Vec4) {0.0f, 1.0f, 0.0f, 1.0f};
 	Vec4 cameraView = (Vec4) {0.0f, 0.0f, -1.0f, 0.0f};
 	r32 cameraNearPlane = -0.01f;
@@ -38,9 +38,16 @@ static Light* createLights()
 	Light* lights = array_create(Light, 1);
 
 	Vec4 lightPosition = (Vec4) {0.0f, 0.0f, 1.0f, 1.0f};
-	Vec4 ambientColor = (Vec4) {0.1f, 0.1f, 0.1f, 1.0f};
-	Vec4 diffuseColor = (Vec4) {0.8, 0.8, 0.8, 1.0f};
+	Vec4 ambientColor = (Vec4) {0.05f, 0.05f, 0.05f, 1.0f};
+	Vec4 diffuseColor = (Vec4) {0.4, 0.4, 0.4, 1.0f};
 	Vec4 specularColor = (Vec4) {0.5f, 0.5f, 0.5f, 1.0f};
+	graphicsLightCreate(&light, lightPosition, ambientColor, diffuseColor, specularColor);
+	array_push(lights, &light);
+
+	lightPosition = (Vec4) {0.0f, 0.0f, 1.0f, 1.0f};
+	ambientColor = (Vec4) {0.05f, 0.05f, 0.05f, 1.0f};
+	diffuseColor = (Vec4) {0.65, 0.65, 0.65, 1.0f};
+	specularColor = (Vec4) {0.5f, 0.5f, 0.5f, 1.0f};
 	graphicsLightCreate(&light, lightPosition, ambientColor, diffuseColor, specularColor);
 	array_push(lights, &light);
 
@@ -70,6 +77,10 @@ extern void coreDestroy()
 extern void coreUpdate(r32 deltaTime)
 {
 	lights[0].position = camera.position;
+	//lights[0].diffuseColor = (Vec4){0,0,0,0};
+	//lights[0].ambientColor = (Vec4){0,0,0,0};
+	//lights[0].specularColor = (Vec4){0,0,0,0};
+	lights[1].position = gmAddVec4(e.worldPosition, (Vec4){-200.0, 50.0, 100.0, 0});
 	printf("%.3f %.3f %.3f %.3f %.3f %.3f %d %d %.3f %.3f %.3f\n", camera.position.x, camera.position.y, camera.position.z,
 		camera.view.x, camera.view.y, camera.view.z, windowWidth, windowHeight, e.worldRotation.x, e.worldRotation.y, e.worldRotation.z);
 }
