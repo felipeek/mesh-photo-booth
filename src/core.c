@@ -26,7 +26,7 @@ static PerspectiveCamera createCamera()
 	Vec4 cameraUp = (Vec4) {0.0f, 1.0f, 0.0f, 1.0f};
 	Vec4 cameraView = (Vec4) {0.0f, 0.0f, -1.0f, 0.0f};
 	r32 cameraNearPlane = -0.01f;
-	r32 cameraFarPlane = -1000.0f;
+	r32 cameraFarPlane = -100000.0f;
 	r32 cameraFov = 45.0f;
 	cameraInit(&camera, cameraPosition, cameraUp, cameraView, cameraNearPlane, cameraFarPlane, cameraFov);
 	return camera;
@@ -39,7 +39,7 @@ static Light* createLights()
 
 	Vec4 lightPosition = (Vec4) {0.0f, 0.0f, 1.0f, 1.0f};
 	Vec4 ambientColor = (Vec4) {0.1f, 0.1f, 0.1f, 1.0f};
-	Vec4 diffuseColor = (Vec4) {0.8, 0.8, 0.8, 1.0f};
+	Vec4 diffuseColor = (Vec4) {0.6, 0.6, 0.6, 1.0f};
 	Vec4 specularColor = (Vec4) {0.5f, 0.5f, 0.5f, 1.0f};
 	graphicsLightCreate(&light, lightPosition, ambientColor, diffuseColor, specularColor);
 	array_push(lights, &light);
@@ -81,7 +81,7 @@ extern void coreRender()
 
 extern void coreInputProcess(boolean* keyState, r32 deltaTime)
 {
-	r32 movementSpeed = 30.0f;
+	r32 movementSpeed = 300.0f;
 	r32 rotationSpeed = 3.0f;
 
 	if (keyState[GLFW_KEY_LEFT_SHIFT])
