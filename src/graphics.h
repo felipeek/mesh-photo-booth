@@ -87,6 +87,7 @@ extern Mesh graphicsQuadCreateWithColor(Vec4 color);
 extern Mesh graphicsMeshCreateWithColor(Vertex* vertices, s32 verticesSize, u32* indices, s32 indicesSize, NormalMappingInfo* normalInfo, Vec4 diffuseColor);
 extern Mesh graphicsMeshCreateWithTexture(Vertex* vertices, s32 verticesSize, u32* indices, s32 indicesSize, NormalMappingInfo* normalInfo, u32 diffuseMap);
 extern Mesh graphicsMeshCreateFromObjWithColor(const s8* objPath, NormalMappingInfo* normalInfo, Vec4 diffuseColor);
+extern Mesh graphicsMeshCreateFromObjWithFaceColorMap(const s8* objPath, NormalMappingInfo* normalInfo, const u8* faceColorMap, Vec4 notInMapColor, Vec4 inMapColor);
 extern Mesh graphicsMeshCreateFromObjWithTexture(const s8* objPath, NormalMappingInfo* normalInfo, u32 diffuseMap);
 extern void graphicsMeshRender(Shader shader, Mesh mesh);
 // If mesh already has a diffuse map, the older diffuse map will be deleted if deleteDiffuseMap is true.
