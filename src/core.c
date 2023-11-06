@@ -72,12 +72,12 @@ extern int coreInit(const char* meshPath)
 	memcpy(meshPath1, meshPath, meshPath1Len);
 	memcpy(meshPath2, meshPath, meshPath2Len);
 	meshPath1[meshPath1Len] = 0;
-	meshPath1[meshPath2Len] = 0;
+	meshPath2[meshPath2Len] = 0;
 
 	Mesh m = graphicsMeshCreateFromObjWithColor(meshPath1, 0, DEFAULT_MESH_COLOR);
 	graphicsEntityCreate(&e, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
 
-	m = graphicsMeshCreateFromObjWithColor(meshPath1, 0, DEFAULT_MESH_COLOR);
+	m = graphicsMeshCreateFromObjWithColor(meshPath2, 0, DEFAULT_MESH_COLOR);
 	graphicsEntityCreate(&e2, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
 
 	//u8* faceColorMap = utilLoadFaceColorMap("/home/felipeek/Development/masters/results/selected_triangles.txt");
