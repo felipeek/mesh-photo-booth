@@ -100,13 +100,13 @@ extern "C" int objParse(const char* objPath, Vertex** vertices, u32** indexes, V
 	}
 
 	// if colors were provided, fill them
-	for (size_t f = 0; f < attrib.colors.size(); f += 3) {
-		Vertex* v = &(*vertices)[f / 3];
-		v->color.x = attrib.colors[f];
-		v->color.y = attrib.colors[f + 1];
-		v->color.z = attrib.colors[f + 2];
-		v->color.w = 1.0f;
-	}
+	//for (size_t f = 0; f < attrib.colors.size(); f += 3) {
+	//	Vertex* v = &(*vertices)[f / 3];
+	//	v->color.x = attrib.colors[f];
+	//	v->color.y = attrib.colors[f + 1];
+	//	v->color.z = attrib.colors[f + 2];
+	//	v->color.w = 1.0f;
+	//}
 
 	return 0;
 }
