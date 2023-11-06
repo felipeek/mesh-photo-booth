@@ -70,7 +70,7 @@ extern int coreInit(const char* meshPath)
 	meshPath1 = malloc((meshPath1Len + 1) * sizeof(s8));
 	meshPath2 = malloc((meshPath2Len + 1) * sizeof(s8));
 	memcpy(meshPath1, meshPath, meshPath1Len);
-	memcpy(meshPath2, meshPath, meshPath2Len);
+	memcpy(meshPath2, split + 1 * sizeof(s8), meshPath2Len);
 	meshPath1[meshPath1Len] = 0;
 	meshPath2[meshPath2Len] = 0;
 
