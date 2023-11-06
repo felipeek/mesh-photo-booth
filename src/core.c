@@ -4,11 +4,13 @@
 #include "graphics.h"
 #include <math.h>
 #include "obj.h"
+#include "util.h"
 #include <stdio.h>
 
 #define PHONG_VERTEX_SHADER_PATH "./shaders/phong_shader.vs"
 #define PHONG_FRAGMENT_SHADER_PATH "./shaders/phong_shader.fs"
-#define GIM_ENTITY_COLOR (Vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+#define DEFAULT_MESH_COLOR (Vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+#define DEFAULT_HIGHLIGHT_COLOR (Vec4) {0.3f, 1.0f, 0.3f, 1.0f}
 
 static Shader phongShader;
 static PerspectiveCamera camera;
@@ -56,8 +58,12 @@ extern int coreInit(const char* meshPath)
 	// Create light
 	lights = createLights();
 
-	Mesh m = graphicsMeshCreateFromObjWithColor(meshPath, 0, GIM_ENTITY_COLOR);
+	Mesh m = graphicsMeshCreateFromObjWithColor(meshPath, 0, DEFAULT_MESH_COLOR);
 	graphicsEntityCreate(&e, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
+
+	//u8* faceColorMap = utilLoadFaceColorMap("/home/felipeek/Development/masters/results/selected_triangles.txt");
+	//Mesh m = graphicsMeshCreateFromObjWithFaceColorMap(meshPath, 0, faceColorMap, DEFAULT_MESH_COLOR, DEFAULT_HIGHLIGHT_COLOR);
+	//graphicsEntityCreate(&e, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
 
 	return 0;
 }

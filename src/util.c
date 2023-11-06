@@ -1,4 +1,5 @@
 #include "util.h"
+#include <dynamic_array.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,4 +35,17 @@ extern s8* utilReadFile(const s8* path, s32* _fileLength)
 extern void utilFreeFile(s8* file)
 {
 	free(file);
+}
+
+extern u8* utilLoadFaceColorMap(const s8* path) {
+	u8* faceColorMapPath = array_create(u8, 1024);
+	s32 file_length;
+	s8* file_content = utilReadFile(path, &file_length);
+
+	for (s32 i = 0; i < file_length; ++i) {
+		u8 val = file_content[i] == '1';
+		array_push(faceColorMapPath, &val);
+	}
+
+	return faceColorMapPath;
 }
