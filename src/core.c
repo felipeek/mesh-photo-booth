@@ -39,9 +39,9 @@ static Light* createLights()
 	Light light;
 	Light* lights = array_create(Light, 1);
 
-	Vec4 lightPosition = (Vec4) {0.0f, 0.0f, 1.0f, 1.0f};
-	Vec4 ambientColor = (Vec4) {0.1f, 0.1f, 0.1f, 1.0f};
-	Vec4 diffuseColor = (Vec4) {0.8, 0.8, 0.8, 1.0f};
+	Vec4 lightPosition = (Vec4) {0.0f, 0.0f, 1000.0f, 1.0f};
+	Vec4 ambientColor = (Vec4) {0.0f, 0.0f, 0.0f, 1.0f};
+	Vec4 diffuseColor = (Vec4) {0.95f, 0.95f, 0.95f, 1.0f};
 	Vec4 specularColor = (Vec4) {0.5f, 0.5f, 0.5f, 1.0f};
 	graphicsLightCreate(&light, lightPosition, ambientColor, diffuseColor, specularColor);
 	array_push(lights, &light);
