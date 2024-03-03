@@ -1,5 +1,5 @@
-#ifndef BASIC_ENGINE_CAMERA_H
-#define BASIC_ENGINE_CAMERA_H
+#ifndef MESH_PHOTO_BOOTH_CAMERA_H
+#define MESH_PHOTO_BOOTH_CAMERA_H
 #include "graphics_math.h"
 
 typedef struct PerspectiveCameraStruct PerspectiveCamera;

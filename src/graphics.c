@@ -305,9 +305,11 @@ extern void graphicsMeshRender(Shader shader, Mesh mesh)
 {
 	glBindVertexArray(mesh.VAO);
 	glUseProgram(shader);
+	glEnable(GL_MULTISAMPLE);
 	diffuseUpdateUniforms(&mesh.diffuseInfo, shader);
 	normalsUpdateUniforms(&mesh.normalInfo, shader);
 	glDrawElements(GL_TRIANGLES, mesh.indexesSize, GL_UNSIGNED_INT, 0);
+	glDisable(GL_MULTISAMPLE);
 	glUseProgram(0);
 	glBindVertexArray(0);
 }
