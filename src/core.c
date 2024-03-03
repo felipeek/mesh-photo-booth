@@ -1,14 +1,18 @@
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <dynamic_array.h>
 #include "core.h"
 #include "graphics.h"
 #include <math.h>
 #include "obj.h"
+#include "util.h"
 #include <stdio.h>
+#include "photo.h"
 
 #define PHONG_VERTEX_SHADER_PATH "./shaders/phong_shader.vs"
 #define PHONG_FRAGMENT_SHADER_PATH "./shaders/phong_shader.fs"
-#define GIM_ENTITY_COLOR (Vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+#define DEFAULT_MESH_COLOR (Vec4) {1.0f, 1.0f, 1.0f, 1.0f}
+#define DEFAULT_HIGHLIGHT_COLOR (Vec4) {0.3f, 1.0f, 0.3f, 1.0f}
 
 static Shader phongShader;
 static PerspectiveCamera camera;
@@ -56,8 +60,12 @@ extern int coreInit(const char* meshPath)
 	// Create light
 	lights = createLights();
 
-	Mesh m = graphicsMeshCreateFromObjWithColor(meshPath, 0, GIM_ENTITY_COLOR);
+	Mesh m = graphicsMeshCreateFromObjWithColor(meshPath, 0, DEFAULT_MESH_COLOR);
 	graphicsEntityCreate(&e, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
+
+	//u8* faceColorMap = utilLoadFaceColorMap("/home/felipeek/Development/masters/results/selected_triangles.txt");
+	//Mesh m = graphicsMeshCreateFromObjWithFaceColorMap(meshPath, 0, faceColorMap, DEFAULT_MESH_COLOR, DEFAULT_HIGHLIGHT_COLOR);
+	//graphicsEntityCreate(&e, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
 
 	return 0;
 }
@@ -196,28 +204,5 @@ extern void coreWindowResizeProcess(s32 width, s32 height)
 
 extern void coreTakePhoto(const char* outputImgPath, Vec4 cameraPosition, Vec4 cameraView, Vec3 meshRotation)
 {
-	cameraSetPosition(&camera, cameraPosition);
-	cameraSetView(&camera, cameraView);
-	graphicsEntitySetRotation(&e, meshRotation);
-
-	glEnable(GL_CULL_FACE);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	coreUpdate(0.1);
-	coreRender();
-
-	char* color_buffer = calloc(4, windowWidth * windowHeight);
-	glReadBuffer(GL_COLOR_ATTACHMENT0);
-	glPixelStorei(GL_PACK_ALIGNMENT, 4);
-	glReadPixels(0, 0, windowWidth, windowHeight, GL_RGBA, GL_UNSIGNED_BYTE, color_buffer);
-
-	ImageData img;
-	img.channels = 4;
-	img.data = color_buffer;
-	img.height = windowHeight;
-	img.width = windowWidth;
-	graphicsImageSave(outputImgPath, &img);
-
-	free(color_buffer);
+	photoTake(outputImgPath, &camera, &e, windowWidth, windowHeight, 8, cameraPosition, cameraView, meshRotation);
 }

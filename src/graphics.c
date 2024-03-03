@@ -305,9 +305,11 @@ extern void graphicsMeshRender(Shader shader, Mesh mesh)
 {
 	glBindVertexArray(mesh.VAO);
 	glUseProgram(shader);
+	glEnable(GL_MULTISAMPLE);
 	diffuseUpdateUniforms(&mesh.diffuseInfo, shader);
 	normalsUpdateUniforms(&mesh.normalInfo, shader);
 	glDrawElements(GL_TRIANGLES, mesh.indexesSize, GL_UNSIGNED_INT, 0);
+	glDisable(GL_MULTISAMPLE);
 	glUseProgram(0);
 	glBindVertexArray(0);
 }
@@ -601,6 +603,33 @@ extern Mesh graphicsMeshCreateFromObjWithColor(const s8* objPath, NormalMappingI
 	objParse(objPath, &vertices, &indexes, diffuseColor);
 	Mesh m = graphicsMeshCreateWithColor(vertices, array_get_length(vertices), indexes,
 		array_get_length(indexes), normalInfo, diffuseColor);
+	array_release(vertices);
+	array_release(indexes);
+	return m;
+}
+
+static void fill_colors_per_face(Vertex* vertices, u32* indexes, Vec4 color, const u8* faceColorMap) {
+	for (s32 i = 0; i < array_get_length(faceColorMap); ++i) {
+		if (faceColorMap[i]) {
+			u32 i1 = indexes[3 * i + 0];
+			u32 i2 = indexes[3 * i + 1];
+			u32 i3 = indexes[3 * i + 2];
+
+			vertices[i1].color = color;
+			vertices[i2].color = color;
+			vertices[i3].color = color;
+		}
+	}
+}
+
+extern Mesh graphicsMeshCreateFromObjWithFaceColorMap(const s8* objPath, NormalMappingInfo* normalInfo, const u8* faceColorMap,
+		Vec4 notInMapColor, Vec4 inMapColor) {
+	Vertex* vertices;
+	u32* indexes;
+	objParse(objPath, &vertices, &indexes, notInMapColor);
+	fill_colors_per_face(vertices, indexes, inMapColor, faceColorMap);
+	Mesh m = graphicsMeshCreateWithColor(vertices, array_get_length(vertices), indexes,
+		array_get_length(indexes), normalInfo, notInMapColor);
 	array_release(vertices);
 	array_release(indexes);
 	return m;

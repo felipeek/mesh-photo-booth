@@ -1,8 +1,8 @@
 #version 330 core
 
-in vec4 fragmentPosition;
-in vec4 fragmentNormal;
-in vec2 fragmentTextureCoords;
+centroid in vec4 fragmentPosition;
+centroid in vec4 fragmentNormal;
+centroid in vec2 fragmentTextureCoords;
 in vec4 fragmentColor;
 
 // Light
@@ -69,8 +69,7 @@ vec4 getCorrectNormal()
 vec3 getPointColorOfLight(Light light)
 {
 	vec4 normal = getCorrectNormal();
-	vec4 realDiffuseColor = diffuseInfo.useDiffuseMap ? texture(diffuseInfo.diffuseMap, fragmentTextureCoords) :
-		fragmentColor;
+	vec4 realDiffuseColor = diffuseInfo.useDiffuseMap ? texture(diffuseInfo.diffuseMap, fragmentTextureCoords) : fragmentColor;
 
 	vec4 fragmentToPointLightVec = normalize(light.position - fragmentPosition);
 
