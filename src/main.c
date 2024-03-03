@@ -85,6 +85,7 @@ static GLFWwindow* initGlfw(int hideWindow)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 4); // for anti-aliasing
 	if (hideWindow) glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, WINDOW_TITLE, 0, 0);
 	glfwSetWindowPos(window, 50, 50);

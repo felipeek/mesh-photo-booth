@@ -1,5 +1,5 @@
-#ifndef BASIC_ENGINE_GRAPHICS_MATH_H
-#define BASIC_ENGINE_GRAPHICS_MATH_H
+#ifndef MESH_PHOTO_BOOTH_GRAPHICS_MATH_H
+#define MESH_PHOTO_BOOTH_GRAPHICS_MATH_H
 #include "common.h"
 
 typedef struct Mat4Struct Mat4;

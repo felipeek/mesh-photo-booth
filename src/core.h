@@ -1,5 +1,5 @@
-#ifndef BASIC_ENGINE_CORE_H
-#define BASIC_ENGINE_CORE_H
+#ifndef MESH_PHOTO_BOOTH_CORE_H
+#define MESH_PHOTO_BOOTH_CORE_H
 
 #include "common.h"
 #include "graphics.h"
