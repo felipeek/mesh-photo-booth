@@ -90,7 +90,9 @@ extern void photoTake(const char* outputImgPath, PerspectiveCamera* camera, Enti
 	cameraSetPosition(camera, cameraPosition);
 	cameraSetView(camera, cameraView);
 	graphicsEntitySetRotation(e, meshRotation);
-	graphicsEntitySetRotation(e2, meshRotation);
+	if (e2) {
+		graphicsEntitySetRotation(e2, meshRotation);
+	}
 
 	coreUpdate(0.1);
 	coreRender();

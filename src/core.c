@@ -19,6 +19,7 @@ static Shader phongShader;
 static PerspectiveCamera camera;
 static Light* lights;
 static Entity e, e2;
+static boolean hasE2;
 
 extern s32 windowWidth;
 extern s32 windowHeight;
@@ -66,20 +67,29 @@ extern int coreInit(const char* meshPath)
 	u32 meshPathLen = strlen(meshPath);
 	const s8* split = strstr(meshPath, ",");
 
-	u32 meshPath1Len = (split - meshPath);
-	u32 meshPath2Len = meshPathLen - (split - meshPath) - 1; // -1 to remove ','
-	meshPath1 = malloc((meshPath1Len + 1) * sizeof(s8));
-	meshPath2 = malloc((meshPath2Len + 1) * sizeof(s8));
-	memcpy(meshPath1, meshPath, meshPath1Len);
-	memcpy(meshPath2, split + 1 * sizeof(s8), meshPath2Len);
-	meshPath1[meshPath1Len] = 0;
-	meshPath2[meshPath2Len] = 0;
+	if (split) {
+		u32 meshPath1Len = (split - meshPath);
+		u32 meshPath2Len = meshPathLen - (split - meshPath) - 1; // -1 to remove ','
+		meshPath1 = malloc((meshPath1Len + 1) * sizeof(s8));
+		meshPath2 = malloc((meshPath2Len + 1) * sizeof(s8));
+		memcpy(meshPath1, meshPath, meshPath1Len);
+		memcpy(meshPath2, split + 1 * sizeof(s8), meshPath2Len);
+		meshPath1[meshPath1Len] = 0;
+		meshPath2[meshPath2Len] = 0;
+		hasE2 = true;
+	} else {
+		meshPath1 = strdup(meshPath);
+		meshPath2 = NULL;
+		hasE2 = false;
+	}
 
 	Mesh m = graphicsMeshCreateFromObjWithColor(meshPath1, 0, DEFAULT_MESH_COLOR);
 	graphicsEntityCreate(&e, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
 
-	m = graphicsMeshCreateFromObjWithColor(meshPath2, 0, (Vec4){0.0f, 1.0f, 0.0f, 1.0f});
-	graphicsEntityCreate(&e2, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
+	if (hasE2) {
+		m = graphicsMeshCreateFromObjWithColor(meshPath2, 0, (Vec4){0.0f, 1.0f, 0.0f, 1.0f});
+		graphicsEntityCreate(&e2, m, (Vec4){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){0.0f, 0.0f, 0.0f}, (Vec3){1.0f, 1.0f, 1.0f});
+	}
 
 	//u8* faceColorMap = utilLoadFaceColorMap("/home/felipeek/Development/masters/results/selected_triangles.txt");
 	//Mesh m = graphicsMeshCreateFromObjWithFaceColorMap(meshPath, 0, faceColorMap, DEFAULT_MESH_COLOR, DEFAULT_HIGHLIGHT_COLOR);
@@ -106,7 +116,7 @@ extern void coreUpdate(r32 deltaTime)
 extern void coreRender()
 {
 	graphicsEntityRenderPhongShader(phongShader, &camera, &e, lights);
-	graphicsEntityRenderPhongShader(phongShader, &camera, &e2, lights);
+	if (hasE2) graphicsEntityRenderPhongShader(phongShader, &camera, &e2, lights);
 }
 
 extern void coreInputProcess(boolean* keyState, r32 deltaTime)
@@ -134,14 +144,14 @@ extern void coreInputProcess(boolean* keyState, r32 deltaTime)
 			Vec3 rotation = e.worldRotation;
 			rotation.x -= rotationSpeed * deltaTime;
 			graphicsEntitySetRotation(&e, rotation);
-			graphicsEntitySetRotation(&e2, rotation);
+			if (hasE2) graphicsEntitySetRotation(&e2, rotation);
 		}
 		else
 		{
 			Vec3 rotation = e.worldRotation;
 			rotation.x += rotationSpeed * deltaTime;
 			graphicsEntitySetRotation(&e, rotation);
-			graphicsEntitySetRotation(&e2, rotation);
+			if (hasE2) graphicsEntitySetRotation(&e2, rotation);
 		}
 	}
 	if (keyState[GLFW_KEY_Y])
@@ -151,14 +161,14 @@ extern void coreInputProcess(boolean* keyState, r32 deltaTime)
 			Vec3 rotation = e.worldRotation;
 			rotation.y += rotationSpeed * deltaTime;
 			graphicsEntitySetRotation(&e, rotation);
-			graphicsEntitySetRotation(&e2, rotation);
+			if (hasE2) graphicsEntitySetRotation(&e2, rotation);
 		}
 		else
 		{
 			Vec3 rotation = e.worldRotation;
 			rotation.y -= rotationSpeed * deltaTime;
 			graphicsEntitySetRotation(&e, rotation);
-			graphicsEntitySetRotation(&e2, rotation);
+			if (hasE2) graphicsEntitySetRotation(&e2, rotation);
 		}
 	}
 	if (keyState[GLFW_KEY_Z])
@@ -168,14 +178,14 @@ extern void coreInputProcess(boolean* keyState, r32 deltaTime)
 			Vec3 rotation = e.worldRotation;
 			rotation.z += rotationSpeed * deltaTime;
 			graphicsEntitySetRotation(&e, rotation);
-			graphicsEntitySetRotation(&e2, rotation);
+			if (hasE2) graphicsEntitySetRotation(&e2, rotation);
 		}
 		else
 		{
 			Vec3 rotation = e.worldRotation;
 			rotation.z -= rotationSpeed * deltaTime;
 			graphicsEntitySetRotation(&e, rotation);
-			graphicsEntitySetRotation(&e2, rotation);
+			if (hasE2) graphicsEntitySetRotation(&e2, rotation);
 		}
 	}
 	if (keyState[GLFW_KEY_L])
@@ -232,5 +242,5 @@ extern void coreWindowResizeProcess(s32 width, s32 height)
 
 extern void coreTakePhoto(const char* outputImgPath, Vec4 cameraPosition, Vec4 cameraView, Vec3 meshRotation)
 {
-	photoTake(outputImgPath, &camera, &e, &e2, windowWidth, windowHeight, 8, cameraPosition, cameraView, meshRotation);
+	photoTake(outputImgPath, &camera, &e, hasE2 ? &e2 : 0, windowWidth, windowHeight, 8, cameraPosition, cameraView, meshRotation);
 }
