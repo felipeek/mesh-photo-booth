@@ -1,5 +1,5 @@
-#ifndef BASIC_ENGINE_COMMON_H
-#define BASIC_ENGINE_COMMON_H
+#ifndef MESH_PHOTO_BOOTH_COMMON_H
+#define MESH_PHOTO_BOOTH_COMMON_H
 #include <stdint.h>
 
 typedef char s8;
